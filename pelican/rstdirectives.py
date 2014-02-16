@@ -70,7 +70,7 @@ directives.register_directive('code-block', Pygments)
 directives.register_directive('sourcecode', Pygments)
 
 
-_abbr_re = re.compile('\((.*)\)$')
+_tag_re = re.compile('\((.*)\)$')
 
 
 class abbreviation(nodes.Inline, nodes.TextElement):
@@ -79,7 +79,7 @@ class abbreviation(nodes.Inline, nodes.TextElement):
 
 def abbr_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
     text = utils.unescape(text)
-    m = _abbr_re.search(text)
+    m = _tag_re.search(text)
     if m is None:
         return [abbreviation(text, text)], []
     abbr = text[:m.start()].strip()
@@ -87,3 +87,19 @@ def abbr_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
     return [abbreviation(abbr, abbr, explanation=expl)], []
 
 roles.register_local_role('abbr', abbr_role)
+
+
+class keyboard(nodes.Inline, nodes.TextElement):
+    pass
+
+
+def kbd_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
+    text = utils.unescape(text)
+    m = _tag_re.search(text)
+    if m is None:
+        return [keyboard(text, text)], []
+    kbd = text[:m.start()].strip()
+    expl = m.group(1)
+    return [keyboard(kbd, kbd, explanation=expl)], []
+
+roles.register_local_role('kbd', kbd_role)

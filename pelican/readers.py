@@ -117,6 +117,12 @@ class PelicanHTMLTranslator(HTMLTranslator):
     def depart_abbreviation(self, node):
         self.body.append('</abbr>')
 
+    def visit_keyboard(self, node):
+        self.body.append(self.starttag(node, 'kbd', ''))
+
+    def depart_keyboard(self, node):
+        self.body.append('</kbd>')
+
     def visit_image(self, node):
         # set an empty alt if alt is not specified
         # avoids that alt is taken from src
